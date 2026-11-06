@@ -87,6 +87,11 @@ const drawing = (e) => {
   if (!isDrowing) return;
   ctx.putImageData(snapshot, 0, 0);
 
+  if (selectedTool == "brush" || selectedTool == "eraser") {
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+  }
+
   switch (selectedTool) {
     case "brush":
       ctx.lineTo(e.offsetX, e.offsetY);
@@ -103,6 +108,12 @@ const drawing = (e) => {
 
     case "triangle":
       drawTriangle(e);
+      break;
+
+    case "eraser":
+      ctx.strokeStyle = "#FFF";
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
       break;
     default:
       break;
