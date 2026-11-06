@@ -62,6 +62,20 @@ const drawCircle = (e) => {
   }
 };
 
+// drawTriangle
+const drawTriangle = (e) => {
+  ctx.beginPath();
+  ctx.moveTo(prevMouseX, prevMouseY);
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.lineTo(prevMouseX * 2 - e.offsetX, e.offsetY);
+  ctx.closePath();
+  if (fillColor.checked) {
+    ctx.fill();
+  } else {
+    ctx.stroke();
+  }
+};
+
 // drawing
 const drawing = (e) => {
   if (!isDrowing) return;
@@ -79,6 +93,10 @@ const drawing = (e) => {
 
     case "circle":
       drawCircle(e);
+      break;
+
+    case "triangle":
+      drawTriangle(e);
       break;
     default:
       break;
