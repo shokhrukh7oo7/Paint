@@ -3,12 +3,15 @@ const canvas = document.querySelector("canvas");
 const toolBtns = document.querySelectorAll(".tool");
 const fillColor = document.querySelector("#fill-color");
 const sizeSlider = document.querySelector("#size-slider");
+const colorBtns = document.querySelectorAll(".colors .option");
+const colorPicker = document.querySelector("#color-picker");
 
 // variables
 let ctx = canvas.getContext("2d");
 let isDrowing = false;
 let brushWidth = 5;
 let selectedTool = "brush";
+let selectedColor = "#000";
 let prevMouseX;
 let prevMouseY;
 let snapshot;
@@ -26,6 +29,8 @@ const startDraw = (e) => {
   prevMouseY = e.offsetY;
   ctx.beginPath();
   ctx.lineWidth = brushWidth;
+  ctx.strokeStyle = selectedColor;
+  ctx.fillStyle = selectedColor;
   snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
 };
 
@@ -107,6 +112,22 @@ const drawing = (e) => {
 // change brush width
 sizeSlider.addEventListener("change", () => {
   brushWidth = sizeSlider.value;
+});
+
+// set color to shapes
+colorBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    document.querySelector(".options .selected").classList.remove("selected");
+    btn.classList.add("selected");
+    const bgColor = window.getComputedStyle(btn).getPropertyValue("background-color");
+    selectedColor = bgColor;
+  });
+});
+
+// set color from color picker
+colorPicker.addEventListener("change", () => {
+  colorPicker.parentElement.style.background = colorPicker.value;
+  colorPicker.parentElement.click();
 });
 
 canvas.addEventListener("mousedown", startDraw);
