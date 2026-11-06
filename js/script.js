@@ -50,6 +50,18 @@ const drawRectangle = (e) => {
   ctx.fillRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
 };
 
+// drawCircle
+const drawCircle = (e) => {
+  ctx.beginPath();
+  const radius = Math.sqrt(Math.pow(prevMouseX - e.offsetX, 2) + Math.pow(prevMouseY - e.offsetY, 2));
+  ctx.arc(prevMouseX, prevMouseY, radius, 0, 2 * Math.PI);
+  if (fillColor.checked) {
+    ctx.fill();
+  } else {
+    ctx.stroke();
+  }
+};
+
 // drawing
 const drawing = (e) => {
   if (!isDrowing) return;
@@ -63,6 +75,10 @@ const drawing = (e) => {
 
     case "rectangle":
       drawRectangle(e);
+      break;
+
+    case "circle":
+      drawCircle(e);
       break;
     default:
       break;
