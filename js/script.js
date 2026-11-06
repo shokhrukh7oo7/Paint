@@ -5,6 +5,8 @@ const fillColor = document.querySelector("#fill-color");
 const sizeSlider = document.querySelector("#size-slider");
 const colorBtns = document.querySelectorAll(".colors .option");
 const colorPicker = document.querySelector("#color-picker");
+const clearCanvas = document.querySelector(".clear-canvas");
+const saveImageBtn = document.querySelector(".save-img");
 
 // variables
 let ctx = canvas.getContext("2d");
@@ -16,10 +18,18 @@ let prevMouseX;
 let prevMouseY;
 let snapshot;
 
+// set background canvas save image
+const setCanvasBackground = () => {
+  ctx.fillStyle = "#FFF";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = selectedColor;
+};
+
 // set canvas width and height
 window.addEventListener("load", () => {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
+  setCanvasBackground();
 });
 
 // start drawing
@@ -139,6 +149,20 @@ colorBtns.forEach((btn) => {
 colorPicker.addEventListener("change", () => {
   colorPicker.parentElement.style.background = colorPicker.value;
   colorPicker.parentElement.click();
+});
+
+// clear canvas btn
+clearCanvas.addEventListener("click", () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  setCanvasBackground();
+});
+
+// save image btn
+saveImageBtn.addEventListener("click", () => {
+  const link = document.createElement("a");
+  link.download = `Paint ${Date.now()}.jpg`;
+  link.href = canvas.toDataURL();
+  link.click();
 });
 
 canvas.addEventListener("mousedown", startDraw);
