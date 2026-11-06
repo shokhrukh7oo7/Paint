@@ -2,6 +2,7 @@
 const canvas = document.querySelector("canvas");
 const toolBtns = document.querySelectorAll(".tool");
 const fillColor = document.querySelector("#fill-color");
+const sizeSlider = document.querySelector("#size-slider");
 
 // variables
 let ctx = canvas.getContext("2d");
@@ -102,6 +103,11 @@ const drawing = (e) => {
       break;
   }
 };
+
+// change brush width
+sizeSlider.addEventListener("change", () => {
+  brushWidth = sizeSlider.value;
+});
 
 canvas.addEventListener("mousedown", startDraw);
 canvas.addEventListener("mousemove", drawing);
