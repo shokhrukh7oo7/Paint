@@ -1,28 +1,68 @@
+// global variables
 const canvas = document.querySelector("canvas");
+const toolBtns = document.querySelectorAll(".tool");
 
+// variables
 let ctx = canvas.getContext("2d");
 let isDrowing = false;
 let brushWidth = 5;
+let selectedTool = "brush";
+let prevMouseX;
+let prevMouseY;
+let snapshot;
 
+// set canvas width and height
 window.addEventListener("load", () => {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
 });
 
-const startDraw = () => {
+// start drawing
+const startDraw = (e) => {
   isDrowing = true;
+  prevMouseX = e.offsetX;
+  prevMouseY = e.offsetY;
   ctx.beginPath();
   ctx.lineWidth = brushWidth;
+  snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
 };
 
+// stop drawing
 const stopDraw = () => {
   isDrowing = false;
 };
 
+// tools btn
+toolBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelector(".options .active").classList.remove("active");
+    btn.classList.add("active");
+    selectedTool = btn.id;
+  });
+});
+
+// draw rectangle
+const drawRectangle = (e) => {
+  ctx.strokeRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
+};
+
+// drawing
 const drawing = (e) => {
   if (!isDrowing) return;
-  ctx.lineTo(e.offsetX, e.offsetY);
-  ctx.stroke();
+  ctx.putImageData(snapshot, 0, 0);
+
+  switch (selectedTool) {
+    case "brush":
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      break;
+
+    case "rectangle":
+      drawRectangle(e);
+      break;
+    default:
+      break;
+  }
 };
 
 canvas.addEventListener("mousedown", startDraw);
